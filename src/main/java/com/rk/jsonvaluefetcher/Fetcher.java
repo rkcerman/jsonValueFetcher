@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
  */
 public class Fetcher {
 
-    private static Logger logger = LoggerFactory.getLogger(Fetcher.class);
-    public static String text;
+    private Logger logger = LoggerFactory.getLogger(Fetcher.class);
+    public String text;
 
     public Fetcher() {
 
@@ -37,7 +37,7 @@ public class Fetcher {
      * @return text.toString Fetched JSON as a String
      * @throws IOException
      */
-    public static void fetch(URL url) throws IOException {
+    public void fetch(URL url) throws IOException {
         final int[] tryNumber = {0};
 
         Callable<Boolean> callable = new Callable<Boolean>() {
@@ -82,7 +82,7 @@ public class Fetcher {
         return new JSONArray(text);
     }
 
-    public static JSONObject fetchJSONObject(URL url) throws IOException {
+    public JSONObject fetchJSONObject(URL url) throws IOException {
         fetch(url);
         return new JSONObject(text);
     }
