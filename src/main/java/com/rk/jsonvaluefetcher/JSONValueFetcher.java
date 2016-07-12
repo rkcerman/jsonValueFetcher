@@ -28,7 +28,10 @@ public class JSONValueFetcher extends Fetcher {
     }
 
     public static void app() {
-        Scanner scanner = new Scanner(System.in);
+        CSVhandler csVhandler = new CSVhandler("harok1.csv");
+
+    }
+/*        Scanner scanner = new Scanner(System.in);
         System.out.println("URL: ");
         String URL = scanner.next();
         System.out.println("Path (in format ' foo/bar/foo ' ): ");
@@ -42,6 +45,6 @@ public class JSONValueFetcher extends Fetcher {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 }
