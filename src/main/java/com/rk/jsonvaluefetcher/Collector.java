@@ -1,6 +1,10 @@
 package main.java.com.rk.jsonvaluefetcher;
 
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.Option;
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,23 +36,43 @@ public class Collector extends Fetcher {
     }
 
     public Object collect(JSONObject responseJson, String path) {
-        ArrayList<String> pathList = parsePath(path);
-        JSONObject valueJson = responseJson;
-        Object value = 0;
-        for(int i = 0; i < pathList.size(); i++) {
+//        ArrayList<String> pathList = parsePath(path);
+//        JSONObject valueJson = responseJson;
+//        JSONObject valueObj = null;
+//        JSONArray valueArray = null;
+        Object document = Configuration.defaultConfiguration().addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL)
+                .jsonProvider().parse
+                (responseJson.toString());
+
+        //TODO REPLACE WITH JSONPATH
+/*        for(int i = 0; i < pathList.size(); i++) {
             if((pathList.size() - i) != 1) {
                 logger.info("Current path: " + pathList.get(i));
-                valueJson = valueJson.getJSONObject(pathList.get(i));
+
+                if((valueArray == null) && (valueJson != null)) {
+
+                    valueJson = valueJson.optJSONObject(pathList.get(i));
+                    if (valueJson == null) {
+                        valueArray = valueJson.optJSONArray(pathList.get(i));
+                        valueJson = null;
+                    } else {
+                        valueArray = null;
+                    }
+
+                } else {
+                    valueArray = valueArray.ge;
+                }
 
             } else {
                 logger.info("Getting the value");
                 value = valueJson.get(pathList.get(i));
             }
-        }
+        }*/
 
-        return value;
+        return JsonPath.read(document, path);
     }
 
+    @Deprecated
     public ArrayList parsePath(String path) {
         int slashCount = StringUtils.countMatches(path, "/");
         int startIndex = 0;

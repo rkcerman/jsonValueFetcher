@@ -48,7 +48,9 @@ public class CSVhandler {
         try {
              mapReader = new CsvMapReader(new FileReader(CSV_FILENAME), CsvPreference
                     .STANDARD_PREFERENCE);
-             mapWriter = new CsvMapWriter(new FileWriter("harokNew.csv"), CsvPreference
+             mapWriter = new CsvMapWriter(new FileWriter(CSV_FILENAME.replace(".csv",
+                     "_new.csv")),
+                     CsvPreference
                      .STANDARD_PREFERENCE);
 
             final String[] header = mapReader.getHeader(true);

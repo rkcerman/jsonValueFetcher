@@ -28,23 +28,14 @@ public class JSONValueFetcher extends Fetcher {
     }
 
     public static void app() {
-        CSVhandler csVhandler = new CSVhandler("harok1.csv");
 
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter name of the csv file: ");
+        String fileName = scanner.next();
+
+        CSVhandler csVhandler = new CSVhandler(fileName);
+
+        scanner.close();
     }
-/*        Scanner scanner = new Scanner(System.in);
-        System.out.println("URL: ");
-        String URL = scanner.next();
-        System.out.println("Path (in format ' foo/bar/foo ' ): ");
-        String path = scanner.next();
-
-        Collector collector = new Collector();
-
-        try {
-            System.out.println("Your value is" + collector.collectInt(collector
-                    .fetchResponse(new URL(URL)), path));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }*/
 
 }
