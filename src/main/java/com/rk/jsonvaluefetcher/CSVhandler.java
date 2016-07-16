@@ -24,9 +24,13 @@ public class CSVhandler {
 
     public CSVhandler(String csvFilename) {
         CSV_FILENAME = csvFilename;
+    }
+
+    public void handle() {
         try {
             readWithCsvBeanReader();
         } catch (Exception e) {
+            e.printStackTrace();
 
         }
     }
@@ -57,9 +61,7 @@ public class CSVhandler {
             final CellProcessor[] processors = getProcessors();
 
             final String[] writeHeader = new String[header.length + 1];
-            logger.info("blabla");
             System.arraycopy(header, 0, writeHeader, 0, header.length);
-            logger.info("blabla1");
             writeHeader[writeHeader.length - 1] = VALUE_HEADER;
 
             mapWriter.writeHeader(writeHeader);

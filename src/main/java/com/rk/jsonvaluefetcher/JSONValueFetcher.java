@@ -42,6 +42,7 @@ public class JSONValueFetcher extends Fetcher {
         String fileName = scanner.next();
 
         CSVhandler csVhandler = new CSVhandler(fileName);
+        csVhandler.handle();
 
         scanner.close();
     }
