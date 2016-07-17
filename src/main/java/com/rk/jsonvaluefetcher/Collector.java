@@ -40,7 +40,6 @@ public class Collector extends Fetcher {
         Object value = null;
         try {
             Object document = Configuration.defaultConfiguration()
-//                .addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL)
                     .jsonProvider().parse
                             (responseJson.toString());
             value = JsonPath.read(document, path);

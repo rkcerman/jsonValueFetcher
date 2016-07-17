@@ -21,6 +21,7 @@ import static spark.Spark.*;
  */
 public class JSONValueFetcher extends Fetcher {
 
+    private static String fName = null;
     static Logger logger = LoggerFactory.getLogger(JSONValueFetcher.class);
 
     public static void main(String[] args) {
@@ -37,9 +38,9 @@ public class JSONValueFetcher extends Fetcher {
             return freeMarkerEngine.render(new ModelAndView(map, "home.ftl"));
             });
 
-        post("/upload", "multipart/form-data", (request, response) -> {
+        post("/upload", "multipart/form-data", (req, res) -> {
 
-            String location = "/tmp";          // the directory location where files will
+            String location = "";          // the directory location where files will
             // be stored
             long maxFileSize = 100000000;       // the maximum size allowed for
             // uploaded files
@@ -48,25 +49,24 @@ public class JSONValueFetcher extends Fetcher {
 
             MultipartConfigElement multipartConfigElement = new MultipartConfigElement(
                     location, maxFileSize, maxRequestSize, fileSizeThreshold);
-            request.raw().setAttribute("org.eclipse.jetty.multipartConfig",
+            req.raw().setAttribute("org.eclipse.jetty.multipartConfig",
                     multipartConfigElement);
 
-            Collection<Part> parts = request.raw().getParts();
+            Collection<Part> parts = req.raw().getParts();
             for (Part part : parts) {
                 System.out.println("Name: " + part.getName());
                 System.out.println("Size: " + part.getSize());
                 System.out.println("Filename: " + part.getSubmittedFileName());
             }
 
-            String fName = request.raw().getPart("file").getSubmittedFileName();
+            fName = req.raw().getPart("file").getSubmittedFileName();
             UUID uuid = UUID.randomUUID();
-            fName += uuid.toString();
+            fName = fName.replace(".csv", uuid + ".csv");
 
-            System.out.println("Title: " + request.raw().getParameter("title"));
             System.out.println("File: " + fName);
 
-            Part uploadedFile = request.raw().getPart("file");
-            Path out = Paths.get("tmp/" + fName);
+            Part uploadedFile = req.raw().getPart("file");
+            Path out = Paths.get("" + fName);
             try (final InputStream in = uploadedFile.getInputStream()) {
                 Files.copy(in, out);
                 uploadedFile.delete();
@@ -75,22 +75,26 @@ public class JSONValueFetcher extends Fetcher {
             parts = null;
             uploadedFile = null;
 
+            app();
+
+//            Map<String, Object> map = new HashMap<>();
+//            map.put("dlink", fName);
+//            return freeMarkerEngine.render(new ModelAndView(map, "download.ftl"));
             return "OK";
         });
 
-        app();
     }
 
     public static void app() {
 
-        Scanner scanner = new Scanner(System.in);
+/*        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter name of the csv file: ");
-        String fileName = scanner.next();
+        String fileName = scanner.next();*/
 
-        CSVhandler csVhandler = new CSVhandler(fileName);
+        CSVhandler csVhandler = new CSVhandler(fName);
         csVhandler.handle();
 
-        scanner.close();
+//        scanner.close();
     }
 
 }
