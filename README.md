@@ -16,7 +16,7 @@ http://api.foo.bar//apicall3, $.store.book[0].title
 
 ###Example output###
 ```
-link, path
+link, path, value
 http://api.foo.bar//apicall1, $.store.book[0].title, The Great Gatsby
 http://api.foo.bar//apicall2, $.store.book[0].title, Brothers Karamazov
 http://api.foo.bar//apicall3, $.store.book[0].title, The Trial
