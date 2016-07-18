@@ -52,7 +52,9 @@ public class CSVhandler {
         try {
              mapReader = new CsvMapReader(new FileReader(CSV_FILENAME), CsvPreference
                     .STANDARD_PREFERENCE);
-             mapWriter = new CsvMapWriter(new FileWriter(CSV_FILENAME.replace(".csv",
+             mapWriter = new CsvMapWriter(new FileWriter(
+                     "./tmp/" +
+                     CSV_FILENAME.replace(".csv",
                      "_new.csv")),
                      CsvPreference
                      .STANDARD_PREFERENCE);

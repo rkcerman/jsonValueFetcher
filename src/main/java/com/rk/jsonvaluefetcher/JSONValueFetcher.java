@@ -5,9 +5,11 @@ import freemarker.template.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.ModelAndView;
+import spark.Spark;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.Part;
+import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,6 +27,8 @@ public class JSONValueFetcher extends Fetcher {
     static Logger logger = LoggerFactory.getLogger(JSONValueFetcher.class);
 
     public static void main(String[] args) {
+        staticFiles.externalLocation
+                ("./tmp");
         FreeMarkerEngine freeMarkerEngine = new FreeMarkerEngine();
         Configuration freeMarkerConfiguration = new Configuration();
         freeMarkerConfiguration.setTemplateLoader(new ClassTemplateLoader(JSONValueFetcher.class, "/"));
@@ -39,7 +43,6 @@ public class JSONValueFetcher extends Fetcher {
             });
 
         post("/upload", "multipart/form-data", (req, res) -> {
-
             String location = "";          // the directory location where files will
             // be stored
             long maxFileSize = 100000000;       // the maximum size allowed for
@@ -77,17 +80,17 @@ public class JSONValueFetcher extends Fetcher {
 
             app();
 
-//            Map<String, Object> map = new HashMap<>();
-//            map.put("dlink", fName);
-//            return freeMarkerEngine.render(new ModelAndView(map, "download.ftl"));
-            return "OK";
+            Map<String, Object> map = new HashMap<>();
+            map.put("dlink", fName.replace(".csv", "_new.csv"));
+            return freeMarkerEngine.render(new ModelAndView(map, "download.ftl"));
         });
 
     }
 
     public static void app() {
 
-/*        Scanner scanner = new Scanner(System.in);
+/*      Uncomment if wanna use the command line version
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter name of the csv file: ");
         String fileName = scanner.next();*/
 

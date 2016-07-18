@@ -2,6 +2,6 @@
   <title>Welcome!</title>
 </head>
 <body>
-<p>Download</p>
+<a href="${dlink}">Download</a>
 </body>
 </html>
