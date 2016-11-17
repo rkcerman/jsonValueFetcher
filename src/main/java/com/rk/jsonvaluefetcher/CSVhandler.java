@@ -69,19 +69,21 @@ public class CSVhandler {
             mapWriter.writeHeader(writeHeader);
 
             Map<String, Object> linkMap;
+	    int i = 1;
             while( (linkMap = mapReader.read(header, processors)) !=
                     null ) {
-
+		
                 Collector collector = new Collector();
                 URL URL = new URL(linkMap.get("link").toString());
                 String path = linkMap.get("path").toString();
 
                 Object value = collector.collect(collector
                     .fetchResponse(URL), path);
-                logger.info("Value is: " + value);
+                logger.info("(" + i  +  ") Value is: " + value);
 
                 linkMap.put(VALUE_HEADER, value);
                 mapWriter.write(linkMap, writeHeader);
+		i++;
             }
         }
         finally {
