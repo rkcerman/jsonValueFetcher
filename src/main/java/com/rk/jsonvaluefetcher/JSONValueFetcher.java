@@ -27,6 +27,7 @@ public class JSONValueFetcher extends Fetcher {
     static Logger logger = LoggerFactory.getLogger(JSONValueFetcher.class);
 
     public static void main(String[] args) {
+	port(getHerokuAssignedPort());
         staticFiles.externalLocation
                 ("./tmp");
         FreeMarkerEngine freeMarkerEngine = new FreeMarkerEngine();
@@ -34,7 +35,7 @@ public class JSONValueFetcher extends Fetcher {
         freeMarkerConfiguration.setTemplateLoader(new ClassTemplateLoader(JSONValueFetcher.class, "/"));
         freeMarkerEngine.setConfiguration(freeMarkerConfiguration);
 
-        get("/jsonfetch", (req, res) -> {
+        get("/", (req, res) -> {
             res.status(200);
             res.type("text/html");
             Map<String, Object> map = new HashMap<>();
@@ -85,6 +86,14 @@ public class JSONValueFetcher extends Fetcher {
             return freeMarkerEngine.render(new ModelAndView(map, "download.ftl"));
         });
 
+    }
+
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
     }
 
     public static void app() {
